@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  postgres_db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: sample
+      POSTGRES_USER: samkeet
+      POSTGRES_PASSWORD: samkeet
+    restart: always
+    expose:
+      - "5432"
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgres://samkeet:samkeet@postgres_db/sample
+      SECRET_KEY: -*l@^s9!@rzzb#xht+mg-m*ld6z_5n&)85)$za7nguar1^l4-o
+      ALLOWED_HOSTS: backend
+    depends_on:
+      - postgres_db
+    expose:
+      - "8000"
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
