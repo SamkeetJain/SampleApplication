@@ -12,7 +12,10 @@ FROM nginx:alpine
 COPY default.conf /etc/nginx/conf.d/default.conf
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /frontend/build /usr/share/nginx/html
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 EXPOSE 80
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["nginx", "-g", "daemon off;"]
